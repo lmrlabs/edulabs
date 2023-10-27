@@ -13,6 +13,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
+import { Input } from "./ui/input"
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -52,7 +53,7 @@ const components: { title: string; href: string; description: string }[] = [
   },
 ]
 
-export function MainNavigationMenu() {
+const CenterNavigationMenu: React.FC = () => {
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -142,3 +143,14 @@ const ListItem = React.forwardRef<
   )
 })
 ListItem.displayName = "ListItem"
+
+export const MainNavigationBar: React.FC = () => {
+  return (
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-14 items-center justify-between">
+        <CenterNavigationMenu />
+        <Input className="w-96" placeholder="Search" />
+      </div>
+    </header>
+  )
+}
