@@ -13,9 +13,9 @@ export default function Home() {
   return (
     <div>
       <MainNavigationBar />
-      <main className="px-16 py-12">
+      <main className="px-16 py-16">
         <H1>AP Test Prep</H1>
-        <div className="grid gap-6 grid-cols-2 pt-12">
+        <div className="grid gap-6 grid-cols-2 pt-16">
           <Card>
             <CardHeader>
               <CardTitle>AP Calculus AB</CardTitle>
