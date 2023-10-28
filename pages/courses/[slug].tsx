@@ -11,6 +11,12 @@ import {
 } from "../../components/ui/dropdown-menu";
 import { H3, Muted } from "../../components/ui/typography";
 import CourseFlashcard from "../../components/course-flashcard";
+import CourseProgress from "../../components/course-progress";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "../../components/ui/popover";
 
 function CoursePage() {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -31,6 +37,14 @@ function CoursePage() {
             <Plus className="h-4 w-4 mr-2" />
             New card
           </Button>
+          <Popover>
+            <PopoverTrigger>
+              <Button variant="secondary">Show stats</Button>
+            </PopoverTrigger>
+            <PopoverContent sideOffset={8}>
+              <CourseProgress />
+            </PopoverContent>
+          </Popover>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button>
@@ -38,7 +52,7 @@ function CoursePage() {
                 <ChevronDown className="h-4 w-4 ml-2" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent sideOffset={8}>
               <DropdownMenuItem>Section 2.A</DropdownMenuItem>
               <DropdownMenuItem>Section 2.B</DropdownMenuItem>
               <DropdownMenuItem>Section 2.C</DropdownMenuItem>

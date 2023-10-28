@@ -1,7 +1,6 @@
 import { forwardRef } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Palette } from "lucide-react";
 
 const ChevronIcon: React.FC<{ className: string }> = ({ className }) => {
   return (
