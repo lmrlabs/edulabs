@@ -45,11 +45,11 @@ export default function Home() {
               </CardContent>
             </Card>
           </Link>
-          <Link href="/courses/physics-i">
+          <Link href="/courses/physics-1">
             <Card className="group">
               <CardHeader>
                 <CardTitle className="group-hover:underline">
-                  AP Physics I
+                  AP Physics 1
                 </CardTitle>
                 <CardDescription>7 Units</CardDescription>
               </CardHeader>

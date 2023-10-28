@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Palette } from "lucide-react";
@@ -38,32 +39,33 @@ const PaletteIcon: React.FC<{ className: string }> = ({ className }) => {
   );
 };
 
-export const CourseSidebar: React.FC = () => {
+export const CourseSidebar = forwardRef<HTMLDivElement, {}>((_, ref) => {
   return (
-    <div>
-      <aside className="max-w-xs h-screen w-full border-r border-zinc-200 px-4 py-6">
-        <h1 className="font-bold mb-2">AP®︎ Calculus AB</h1>
-        <Input placeholder="Search" />
-        <ul className="py-2 text-zinc-500">
-          <li>
-            <Button variant="ghost" className="w-full justify-start">
-              <ChevronIcon className="mr-2 h-4 w-4" /> Limits and continuity
-            </Button>
-          </li>
-          <li>
-            <Button variant="ghost" className="w-full justify-start">
-              <ChevronIcon className="mr-2 h-4 w-4" />
-              Differentiation I
-            </Button>
-          </li>
-          <li>
-            <Button variant="ghost" className="w-full justify-start">
-              <PaletteIcon className="mr-2 h-4 w-4" />
-              Customize Theme
-            </Button>
-          </li>
-        </ul>
-      </aside>
-    </div>
+    <aside
+      ref={ref}
+      className="fixed top-0 left-0 max-w-xs h-screen w-full border-r border-zinc-200 px-4 py-6"
+    >
+      <h1 className="font-bold mb-2">AP®︎ Calculus AB</h1>
+      <Input placeholder="Search" />
+      <ul className="py-2 text-zinc-500">
+        <li>
+          <Button variant="ghost" className="w-full justify-start">
+            <ChevronIcon className="mr-2 h-4 w-4" /> Limits and continuity
+          </Button>
+        </li>
+        <li>
+          <Button variant="ghost" className="w-full justify-start">
+            <ChevronIcon className="mr-2 h-4 w-4" />
+            Differentiation I
+          </Button>
+        </li>
+        <li>
+          <Button variant="ghost" className="w-full justify-start">
+            <PaletteIcon className="mr-2 h-4 w-4" />
+            Customize Theme
+          </Button>
+        </li>
+      </ul>
+    </aside>
   );
-};
+});
