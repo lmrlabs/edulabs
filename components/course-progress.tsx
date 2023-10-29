@@ -8,7 +8,7 @@ interface SectionProgressProps {
   todo: number;
 }
 
-const SectionProgress: React.FC<SectionProgressProps> = ({
+export const SectionProgress: React.FC<SectionProgressProps> = ({
   section,
   name,
   done,
@@ -46,7 +46,7 @@ const SectionProgress: React.FC<SectionProgressProps> = ({
   );
 };
 
-const CourseProgress: React.FC = () => {
+export const CourseProgress: React.FC = () => {
   return (
     <div className="flex flex-col gap-4">
       <SectionProgress name="Limit definition" section="a" todo={6} done={2} />
@@ -61,5 +61,3 @@ const CourseProgress: React.FC = () => {
     </div>
   );
 };
-
-export default CourseProgress;

@@ -14,6 +14,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 const CenterNavigationMenu: React.FC = () => {
   return (
@@ -92,7 +93,10 @@ export const MainNavigationBar: React.FC = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
         <CenterNavigationMenu />
-        <Input className="w-96" placeholder="Search" />
+        <div className="flex gap-2">
+          <Input className="w-96" placeholder="Search" />
+          <Button variant="secondary">Log in</Button>
+        </div>
       </div>
     </header>
   );
