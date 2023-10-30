@@ -1,6 +1,8 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import  User  from "../../../server/models/User";
+import User from "../../../server/models/User";
+import mongoose from "mongoose";
+import { dbConnect } from "@/utils/dbConnect";
 
 export default NextAuth({
   providers: [
@@ -11,31 +13,39 @@ export default NextAuth({
     // add other providers as needed
   ],
   callbacks: {
-    async signIn({user, account, profile}) {
-      if (account && account.provider === 'google' && profile) {
+    async signIn({ user, account, profile }) {
+      if (account && account.provider === "google" && profile) {
+        await dbConnect();
         const email = profile.email;
         let existingUser = await User.findOne({ email });
-        
+
+        console.log(email);
         if (!existingUser) {
-          existingUser = await User.create({
-            name: profile.name,
-            email: profile.email,
-            image: profile.image,
-          });
+          try {
+            existingUser = new User({
+              _id: new mongoose.Types.ObjectId().toHexString(),
+              name: profile.name,
+              email: profile.email,
+              image: profile.image,
+            });
+            await existingUser.save();
+          } catch (error) {
+            console.error(error);
+          }
         }
-        
-        user.id = existingUser._id.toString();
+
+        user.id = existingUser!._id.toString();
         return true;
       }
       return false;
     },
-    async jwt({token, user}) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
       }
       return token;
     },
-    async session({session, token}) {
+    async session({ session, token }) {
       if (token.id) {
         session.user.id = token.id as string;
       }

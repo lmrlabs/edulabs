@@ -1,4 +1,4 @@
-import mongoose, { Document, Model, Schema } from 'mongoose';
+import mongoose, { Document, Model, Schema } from "mongoose";
 
 interface IUserProgressSubunit {
   subunitId: Schema.Types.ObjectId;
@@ -27,7 +27,7 @@ interface UserModel extends IUser, Document {}
 const UserProgressSubunitSchema = new Schema({
   subunitId: {
     type: Schema.Types.ObjectId,
-    ref: 'Subunit',
+    ref: "Subunit",
   },
   progress: {
     type: Number,
@@ -38,7 +38,7 @@ const UserProgressSubunitSchema = new Schema({
 const UserProgressUnitSchema = new Schema({
   unitId: {
     type: Schema.Types.ObjectId,
-    ref: 'Unit',
+    ref: "Unit",
   },
   subunits: [UserProgressSubunitSchema],
 });
@@ -46,7 +46,7 @@ const UserProgressUnitSchema = new Schema({
 const UserProgressCourseSchema = new Schema({
   courseId: {
     type: Schema.Types.ObjectId,
-    ref: 'Course',
+    ref: "Course",
   },
   units: [UserProgressUnitSchema],
 });
@@ -67,6 +67,7 @@ const UserSchema = new Schema({
   progress: [UserProgressCourseSchema],
 });
 
-const User: Model<UserModel> = mongoose.models.User || mongoose.model<UserModel>('User', UserSchema);
+const User: Model<UserModel> =
+  mongoose.models.User || mongoose.model<UserModel>("User", UserSchema);
 
 export default User;
