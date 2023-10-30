@@ -24,7 +24,7 @@ interface IUser {
 
 interface UserModel extends IUser, Document {}
 
-const UserProgressSubunitSchema = new Schema({
+const UserProgressSubunitSchema = new Schema<IUserProgressSubunit>({
   subunitId: {
     type: Schema.Types.ObjectId,
     ref: "Subunit",
@@ -35,7 +35,7 @@ const UserProgressSubunitSchema = new Schema({
   },
 });
 
-const UserProgressUnitSchema = new Schema({
+const UserProgressUnitSchema = new Schema<IUserProgressUnit>({
   unitId: {
     type: Schema.Types.ObjectId,
     ref: "Unit",
@@ -43,7 +43,7 @@ const UserProgressUnitSchema = new Schema({
   subunits: [UserProgressSubunitSchema],
 });
 
-const UserProgressCourseSchema = new Schema({
+const UserProgressCourseSchema = new Schema<IUserProgressCourse>({
   courseId: {
     type: Schema.Types.ObjectId,
     ref: "Course",

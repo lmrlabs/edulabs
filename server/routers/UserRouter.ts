@@ -53,9 +53,8 @@ export const userRouter = router({
         };
       });
 
-      let courseIdRecieved = course._id;
       user.progress.push({
-        courseId: courseIdRecieved,
+        courseId: course._id,
         units: unitsForUser,
       });
 
@@ -63,7 +62,7 @@ export const userRouter = router({
       return { message: "Course added successfully." };
     }),
 
-  courses: procedure.query(async ({ input, ctx }) => {
+  myCourses: procedure.query(async ({ input, ctx }) => {
     await dbConnect();
     const user = await User.findById(ctx.session?.user.id).populate({
       path: "progress.courseId",

@@ -1,6 +1,5 @@
-import { z } from "zod";
 import { dbConnect } from "@/utils/dbConnect";
-import mongoose, { Schema } from "mongoose";
+import { z } from "zod";
 import { procedure, router } from "../trpc";
 
 import Course from "../models/Course";

@@ -1,13 +1,29 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const subunitSchema = new mongoose.Schema({
+interface ISubunit {
+  title: string;
+}
+
+interface IUnit {
+  title: string;
+  subunits: ISubunit[];
+}
+
+interface ICourse {
+  name: string;
+  courseCode: string;
+  units: IUnit[];
+  description?: string;
+}
+
+const subunitSchema = new mongoose.Schema<ISubunit>({
   title: {
     type: String,
     required: true,
   },
 });
 
-const unitSchema = new mongoose.Schema({
+const unitSchema = new mongoose.Schema<IUnit>({
   title: {
     type: String,
     required: true,
@@ -15,7 +31,7 @@ const unitSchema = new mongoose.Schema({
   subunits: [subunitSchema],
 });
 
-const courseSchema = new mongoose.Schema({
+const courseSchema = new mongoose.Schema<ICourse>({
   name: {
     type: String,
     required: true,
@@ -27,12 +43,12 @@ const courseSchema = new mongoose.Schema({
   },
 });
 
-let Course: any;
+let Course: mongoose.Model<ICourse>;
 
 if (mongoose.models.Course) {
-  Course = mongoose.model("Course");
+  Course = mongoose.model<ICourse>("Course");
 } else {
-  Course = mongoose.model("Course", courseSchema, "newcourses");
+  Course = mongoose.model<ICourse>("Course", courseSchema, "newcourses");
 }
 
 export default Course;
