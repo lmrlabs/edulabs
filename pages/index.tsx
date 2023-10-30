@@ -22,7 +22,7 @@ export default function Home() {
         <H1>AP Test Prep</H1>
         <div className="grid gap-6 grid-cols-2 pt-16">
           {courses.data?.map((course) => (
-            <Card>
+            <Card key={course._id}>
               <CardHeader>
                 <CardTitle>{course.name}</CardTitle>
                 <CardDescription>{course.description}</CardDescription>
@@ -30,7 +30,7 @@ export default function Home() {
                   variant="outline"
                   onClick={async () => {
                     await addCourseMutation.mutateAsync({
-                      courseId: course.id,
+                      courseId: course._id,
                     });
                   }}
                 >
