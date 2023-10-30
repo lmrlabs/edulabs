@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { trpc } from "../utils/trpc";
+import Link from "next/link";
 
 const ChevronIcon: React.FC<{ className: string }> = ({ className }) => {
   return (
@@ -55,19 +56,21 @@ export const CourseSidebar = forwardRef<
       <ul className="py-2 text-zinc-500">
         {course.data?.units.map((unit, i) => (
           <li key={unit.id}>
-            <Button
-              variant={i + 1 === parseInt(theUnit) ? "secondary" : "ghost"}
-              className="w-full justify-start"
-            >
-              <ChevronIcon
-                className={`mr-2 h-4 w-4 flex-shrink-0 ${
-                  i + 1 === parseInt(theUnit) ? "rotate-90" : ""
-                }`}
-              />
-              <span className="truncate">
-                Unit {i + 1}: {unit.title}
-              </span>
-            </Button>
+            <Link href={`/courses/${courseCode}/unit-${i + 1}`}>
+              <Button
+                variant={i + 1 === parseInt(theUnit) ? "secondary" : "ghost"}
+                className="w-full justify-start"
+              >
+                <ChevronIcon
+                  className={`mr-2 h-4 w-4 flex-shrink-0 ${
+                    i + 1 === parseInt(theUnit) ? "rotate-90" : ""
+                  }`}
+                />
+                <span className="truncate">
+                  Unit {i + 1}: {unit.title}
+                </span>
+              </Button>
+            </Link>
             {i + 1 === parseInt(theUnit) && (
               <div>
                 {unit.subunits.map((subunit, i) => (
