@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { trpc } from "../utils/trpc";
 import Link from "next/link";
-import  ImageButton  from "./ui/mainicon";
+import ImageButton from "./ui/mainicon";
 
 const ChevronIcon: React.FC<{ className: string }> = ({ className }) => {
   return (
@@ -43,16 +43,16 @@ const PaletteIcon: React.FC<{ className: string }> = ({ className }) => {
 
 export const CourseSidebar = forwardRef<
   HTMLDivElement,
-  { courseCode: string; unit: string }
+  { courseCode: string; unit: number }
 >(({ courseCode, unit: theUnit }, ref) => {
   const course = trpc.course.getCourse.useQuery({ courseCode: courseCode! });
 
   return (
     <aside
       ref={ref}
-      className="fixed top-0 left-0 max-w-xs h-screen w-full border-r border-zinc-200 px-4 py-6"
+      className="fixed top-0 left-0 max-w-xs h-screen w-full border-r border-zinc-200 px-4 py-6 overflow-y-auto"
     >
-              <ImageButton />
+      <ImageButton />
 
       <h1 className="font-bold mb-2">{course.data?.name}</h1>
       <Input placeholder="Search" />
@@ -61,12 +61,12 @@ export const CourseSidebar = forwardRef<
           <li key={unit.id}>
             <Link href={`/courses/${courseCode}/unit-${i + 1}`}>
               <Button
-                variant={i + 1 === parseInt(theUnit) ? "secondary" : "ghost"}
+                variant={i + 1 === theUnit ? "secondary" : "ghost"}
                 className="w-full justify-start"
               >
                 <ChevronIcon
                   className={`mr-2 h-4 w-4 flex-shrink-0 ${
-                    i + 1 === parseInt(theUnit) ? "rotate-90" : ""
+                    i + 1 === theUnit ? "rotate-90" : ""
                   }`}
                 />
                 <span className="truncate">
@@ -74,7 +74,7 @@ export const CourseSidebar = forwardRef<
                 </span>
               </Button>
             </Link>
-            {i + 1 === parseInt(theUnit) && (
+            {i + 1 === theUnit && (
               <div>
                 {unit.subunits.map((subunit, i) => (
                   <Button

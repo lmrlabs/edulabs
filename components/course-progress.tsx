@@ -47,22 +47,23 @@ export const SectionProgress: React.FC<SectionProgressProps> = ({
   );
 };
 
-export const CourseProgress: React.FC<{ courseCode: string }> = ({
+export const CourseProgress: React.FC<{ courseCode: string; unit: number }> = ({
   courseCode,
+  unit,
 }) => {
-  const myCourse = trpc.user.course.useQuery({ courseCode });
+  const myCourse = trpc.user.myCourse.useQuery({ courseCode });
+  console.log({ myCourse });
 
   return (
     <div className="flex flex-col gap-4">
-      <SectionProgress name="Limit definition" section="a" todo={6} done={2} />
-      <SectionProgress name="Power rule" section="b" todo={6} done={5} />
-      <SectionProgress name="Log and e rule" section="c" todo={6} done={3} />
-      <SectionProgress
-        name="Power and quotient rule"
-        section="d"
-        todo={6}
-        done={1}
-      />
+      {myCourse.data?.course.units[unit - 1].subunits.map((subunit, i) => (
+        <SectionProgress
+          name={subunit.title}
+          section={String.fromCharCode(97 + i)}
+          todo={6}
+          done={myCourse.data.units[unit - 1].subunits[i].progress}
+        />
+      ))}
     </div>
   );
 };

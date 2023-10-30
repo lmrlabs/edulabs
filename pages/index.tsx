@@ -17,8 +17,6 @@ export default function Home() {
   const addCourseMutation = trpc.user.addCourse.useMutation();
   const myCourses = trpc.user.myCourses.useQuery();
 
-  console.log(myCourses);
-
   return (
     <div>
       <MainNavigationBar />
@@ -35,12 +33,12 @@ export default function Home() {
                   <CardTitle>{course.name}</CardTitle>
                   <CardDescription>{course.description}</CardDescription>
                   <Button
+                    disabled={addCourseMutation.isLoading || isEnrolled}
                     variant={isEnrolled ? "secondary" : "outline"}
                     onClick={async () => {
-                      !isEnrolled &&
-                        (await addCourseMutation.mutateAsync({
-                          courseId: course._id,
-                        }));
+                      await addCourseMutation.mutateAsync({
+                        courseId: course._id,
+                      });
                     }}
                   >
                     {isEnrolled ? "Enrolled" : "Enroll"}

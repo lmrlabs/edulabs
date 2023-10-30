@@ -80,7 +80,7 @@ export const userRouter = router({
     return { courses: user.progress.map((p) => p.courseId) };
   }),
 
-  course: procedure
+  myCourse: procedure
     .input(
       z.object({
         courseCode: z.string(),

@@ -3,7 +3,7 @@ import { CourseSidebar } from "./course-sidebar";
 
 interface CourseLayoutProps extends React.PropsWithChildren {
   courseCode: string;
-  unit: string;
+  unit: number;
 }
 
 const CourseLayout: React.FC<CourseLayoutProps> = ({
