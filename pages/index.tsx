@@ -9,9 +9,11 @@ import {
 import { H1 } from "@/components/ui/typography";
 import Link from "next/link";
 import { trpc } from "../utils/trpc";
+import { Button } from "../components/ui/button";
 
 export default function Home() {
   const courses = trpc.course.getCourses.useQuery();
+  const addCourseMutation = trpc.user.addCourse.useMutation();
 
   return (
     <div>
@@ -24,6 +26,16 @@ export default function Home() {
               <CardHeader>
                 <CardTitle>{course.name}</CardTitle>
                 <CardDescription>{course.description}</CardDescription>
+                <Button
+                  variant="outline"
+                  onClick={async () => {
+                    await addCourseMutation.mutateAsync({
+                      courseId: course.id,
+                    });
+                  }}
+                >
+                  Enroll
+                </Button>
               </CardHeader>
               <CardContent>
                 <ul className="list-disc list-inside">

@@ -46,7 +46,7 @@ function CoursePage({
             </Button>
           </PopoverTrigger>
           <PopoverContent sideOffset={8}>
-            <CourseProgress />
+            <CourseProgress courseCode={courseCode!} />
           </PopoverContent>
         </Popover>
         <Dialog>

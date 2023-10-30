@@ -12,7 +12,7 @@ export const userRouter = router({
     if (!ctx.session) {
       return null;
     }
-    return ctx.session.user;
+    return User.findById(ctx.session.user.id);
   }),
 
   addCourse: procedure
@@ -84,13 +84,12 @@ export const userRouter = router({
   course: procedure
     .input(
       z.object({
-        userId: z.string(),
-        courseId: z.string(),
+        courseCode: z.string(),
       })
     )
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       await dbConnect();
-      const user = await User.findById(input.userId).populate({
+      const user = await User.findById(ctx.session?.user.id).populate({
         path: "progress.courseId",
         model: "Course",
         populate: {
@@ -98,12 +97,19 @@ export const userRouter = router({
           model: "Subunit",
         },
       });
+      const theCourse = await Course.find({ courseCode: input.courseCode });
+
+      if (!theCourse) {
+        throw new Error("Course not found.");
+      }
 
       if (!user) {
         throw new Error("User not found.");
       }
+
       const course = user.progress.find(
-        (course) => course.courseId._id.toString() === input.courseId.toString()
+        (course) =>
+          course.courseId._id.toString() === theCourse[0]._id.toString()
       );
 
       if (!course) {

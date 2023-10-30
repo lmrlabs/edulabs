@@ -1,5 +1,6 @@
 import React from "react";
 import { cn } from "../lib/utils";
+import { trpc } from "../utils/trpc";
 
 interface SectionProgressProps {
   name: string;
@@ -46,7 +47,11 @@ export const SectionProgress: React.FC<SectionProgressProps> = ({
   );
 };
 
-export const CourseProgress: React.FC = () => {
+export const CourseProgress: React.FC<{ courseCode: string }> = ({
+  courseCode,
+}) => {
+  const myCourse = trpc.user.course.useQuery({ courseCode });
+
   return (
     <div className="flex flex-col gap-4">
       <SectionProgress name="Limit definition" section="a" todo={6} done={2} />
