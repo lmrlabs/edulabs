@@ -31,7 +31,7 @@ let Course: any;
 if (mongoose.models.Course) {
     Course = mongoose.model('Course');
   } else {
-    Course = mongoose.model('Course', courseSchema);
+    Course = mongoose.model('Course', courseSchema, 'newcourses');
   }
 
 export default Course;
