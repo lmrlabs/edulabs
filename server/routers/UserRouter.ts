@@ -18,13 +18,12 @@ export const userRouter = router({
   addCourse: procedure
     .input(
       z.object({
-        userId: z.string(),
         courseId: z.string(),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       await dbConnect();
-      const user = await User.findById(input.userId);
+      const user = await User.findById(ctx.session?.user.id);
 
       if (!user) {
         throw new Error("User not found.");
@@ -64,29 +63,23 @@ export const userRouter = router({
       return { message: "Course added successfully." };
     }),
 
-  courses: procedure
-    .input(
-      z.object({
-        userId: z.string(),
-      })
-    )
-    .query(async ({ input }) => {
-      await dbConnect();
-      const user = await User.findById(input.userId).populate({
-        path: "progress.courseId",
-        model: "Course",
-        populate: {
-          path: "units.subunits",
-          model: "Subunit",
-        },
-      });
+  courses: procedure.query(async ({ input, ctx }) => {
+    await dbConnect();
+    const user = await User.findById(ctx.session?.user.id).populate({
+      path: "progress.courseId",
+      model: "Course",
+      populate: {
+        path: "units.subunits",
+        model: "Subunit",
+      },
+    });
 
-      if (!user) {
-        throw new Error("User not found.");
-      }
+    if (!user) {
+      throw new Error("User not found.");
+    }
 
-      return { courses: user.progress.map((p) => p.courseId) };
-    }),
+    return { courses: user.progress.map((p) => p.courseId) };
+  }),
 
   course: procedure
     .input(
