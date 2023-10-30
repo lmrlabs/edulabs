@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const connection: { isConnected?: number } = {};
 
@@ -8,7 +8,6 @@ export const dbConnect = async () => {
   }
 
   const db = await mongoose.connect(process.env.MONGOACCESSKEY as string);
-
 
   connection.isConnected = db.connections[0].readyState;
 };
