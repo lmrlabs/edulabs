@@ -1,8 +1,6 @@
-"use client";
-
 import * as React from "react";
 import Link from "next/link";
-
+import { signIn } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -95,7 +93,12 @@ export const MainNavigationBar: React.FC = () => {
         <CenterNavigationMenu />
         <div className="flex gap-2">
           <Input className="w-96" placeholder="Search" />
-          <Button variant="secondary">Log in</Button>
+          <Button
+            variant="secondary"
+            onClick={() => signIn("google", { callbackUrl: "/" })}
+          >
+            Log in
+          </Button>
         </div>
       </div>
     </header>

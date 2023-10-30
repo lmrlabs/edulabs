@@ -16,12 +16,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { H3, Muted } from "@/components/ui/typography";
 import { BarChart, Plus } from "lucide-react";
 

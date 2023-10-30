@@ -1,8 +1,7 @@
-import { initTRPC } from '@trpc/server';
+import { initTRPC } from "@trpc/server";
+import { createContext } from "./context";
 
-
-const t = initTRPC.create();
-
+const t = initTRPC.context<typeof createContext>().create();
 
 // Base router and procedure helpers
 export const router = t.router;

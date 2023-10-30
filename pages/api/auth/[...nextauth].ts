@@ -1,10 +1,9 @@
-import NextAuth from "next-auth";
+import { dbConnect } from "@/utils/dbConnect";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import User from "../../../server/models/User";
-import mongoose from "mongoose";
-import { dbConnect } from "@/utils/dbConnect";
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -49,4 +48,13 @@ export default NextAuth({
       return session;
     },
   },
-});
+  session: {
+    strategy: "jwt",
+  },
+  pages: {
+    signIn: "/",
+  },
+  secret: process.env.NEXT_AUTH_SECRET,
+};
+
+export default NextAuth(authOptions);

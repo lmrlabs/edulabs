@@ -8,11 +8,15 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { H1 } from "@/components/ui/typography";
+import { trpc } from "../utils/trpc";
 
 export default function Home() {
+  const me = trpc.user.me.useQuery();
+
   return (
     <div>
       <MainNavigationBar />
+      <pre>{JSON.stringify(me, null, 2)}</pre>
       <main className="px-16 py-16">
         <H1>AP Test Prep</H1>
         <div className="grid gap-6 grid-cols-2 pt-16">

@@ -7,6 +7,16 @@ import Course from "../models/Course";
 import User from "../models/User";
 
 export const userRouter = router({
+  me: procedure.query(async ({ ctx }) => {
+    await dbConnect();
+    console.log(ctx.session);
+
+    if (!ctx.session) {
+      throw new Error("User not found.");
+    }
+    return ctx.session.user;
+  }),
+
   addCourse: procedure
     .input(
       z.object({
