@@ -51,7 +51,7 @@ const UserProgressCourseSchema = new Schema({
   units: [UserProgressUnitSchema],
 });
 
-const UserSchema = new Schema({
+const UserSchema = new Schema<IUser>({
   name: {
     type: String,
     required: true,
@@ -68,6 +68,6 @@ const UserSchema = new Schema({
 });
 
 const User: Model<UserModel> =
-  mongoose.models.User || mongoose.model<UserModel>("User", UserSchema);
+  mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
 
 export default User;

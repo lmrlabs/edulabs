@@ -19,16 +19,13 @@ export default NextAuth({
         const email = profile.email;
         let existingUser = await User.findOne({ email });
 
-        console.log(email);
         if (!existingUser) {
           try {
-            existingUser = new User({
-              _id: new mongoose.Types.ObjectId().toHexString(),
+            existingUser = await User.create({
               name: profile.name,
               email: profile.email,
               image: profile.image,
             });
-            await existingUser.save();
           } catch (error) {
             console.error(error);
           }

@@ -70,20 +70,20 @@ const DashboardPage = () => {
 
   const coursesQuery = trpc.course.getCourses.useQuery();
 
-  // const isUser = !!session?.user;
+  const isUser = !!session?.user;
 
-  // useEffect(() => {
-  //   if (status === "loading") return; // Do nothing while loading
-  // }, [status]);
+  useEffect(() => {
+    if (status === "loading") return; // Do nothing while loading
+  }, [status]);
 
-  // if (!isUser) {
-  //   return (
-  //     <div>
-  //       <h1>You need to be logged in to view this page.</h1>
-  //       <button onClick={() => signIn("google")}>Sign in</button>
-  //     </div>
-  //   );
-  // }
+  if (!isUser) {
+    return (
+      <div>
+        <h1>You need to be logged in to view this page.</h1>
+        <button onClick={() => signIn("google")}>Sign in</button>
+      </div>
+    );
+  }
 
   if (coursesQuery.isLoading) {
     return <div>Loading...</div>;
