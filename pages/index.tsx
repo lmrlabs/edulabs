@@ -8,15 +8,40 @@ import {
 } from "@/components/ui/card";
 import { H1 } from "@/components/ui/typography";
 import Link from "next/link";
+import { trpc } from "../utils/trpc";
 
 export default function Home() {
+  const courses = trpc.course.getCourses.useQuery();
+
   return (
     <div>
       <MainNavigationBar />
       <main className="px-16 py-16">
         <H1>AP Test Prep</H1>
         <div className="grid gap-6 grid-cols-2 pt-16">
-          <Link href="/courses/calc-ab">
+          {courses.data?.map((course) => (
+            <Card>
+              <CardHeader>
+                <CardTitle>{course.name}</CardTitle>
+                <CardDescription>{course.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc list-inside">
+                  {course.units.map((unit, i) => (
+                    <li>
+                      <Link
+                        href={`/courses/${course.name}/unit-${i + 1}`}
+                        className="hover:underline"
+                      >
+                        Unit {i + 1}: {unit.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          ))}
+          {/* <Link href="/courses/calc-ab">
             <Card className="group">
               <CardHeader>
                 <CardTitle className="group-hover:underline">
@@ -64,7 +89,7 @@ export default function Home() {
                 </ul>
               </CardContent>
             </Card>
-          </Link>
+          </Link> */}
         </div>
       </main>
     </div>

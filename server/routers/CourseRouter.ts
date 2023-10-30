@@ -47,7 +47,9 @@ export const courseRouter = router({
   getCourses: procedure.query(async () => {
     await dbConnect();
     const courses = await Course.find({});
-    return { courses };
+    console.log(courses);
+
+    return courses;
   }),
 
   //get course by id from db

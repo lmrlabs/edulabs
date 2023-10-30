@@ -101,7 +101,7 @@ export const MainNavigationBar: React.FC = () => {
               <Button variant="destructive" onClick={() => signOut()}>
                 Log out
               </Button>
-              <img className="w-9 h-9 rounded-full" src={me.data.image} />
+              <img className="w-10 h-10 rounded-full" src={me.data.image} />
             </>
           ) : (
             <Button
