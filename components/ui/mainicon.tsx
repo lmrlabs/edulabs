@@ -6,7 +6,7 @@ const ImageButton: React.FC = () => {
     return (
         <Link href="/">
 
-                <Image src={logo} alt="Navigate Home" width={100} height={100} />
+                <Image src={logo} alt="Navigate Home" width={75} height={75} />
         </Link>
     );
 }
