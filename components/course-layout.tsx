@@ -3,16 +3,18 @@ import { CourseSidebar } from "./course-sidebar";
 
 interface CourseLayoutProps extends React.PropsWithChildren {
   courseCode: string;
+  unit: string;
 }
 
 const CourseLayout: React.FC<CourseLayoutProps> = ({
   children,
   courseCode,
+  unit,
 }) => {
   const ref = useRef<HTMLDivElement | null>(null);
   return (
     <div className="flex">
-      <CourseSidebar courseCode={courseCode} ref={ref} />
+      <CourseSidebar courseCode={courseCode} unit={unit} ref={ref} />
       <main
         style={{
           marginLeft: ref.current?.getBoundingClientRect().width ?? 320,

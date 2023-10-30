@@ -39,34 +39,58 @@ const PaletteIcon: React.FC<{ className: string }> = ({ className }) => {
   );
 };
 
-export const CourseSidebar = forwardRef<HTMLDivElement, { courseCode: string }>(
-  ({ courseCode }, ref) => {
-    const course = trpc.course.getCourse.useQuery({ courseCode: courseCode! });
+export const CourseSidebar = forwardRef<
+  HTMLDivElement,
+  { courseCode: string; unit: string }
+>(({ courseCode, unit: theUnit }, ref) => {
+  const course = trpc.course.getCourse.useQuery({ courseCode: courseCode! });
 
-    return (
-      <aside
-        ref={ref}
-        className="fixed top-0 left-0 max-w-xs h-screen w-full border-r border-zinc-200 px-4 py-6"
-      >
-        <h1 className="font-bold mb-2">{course.data?.name}</h1>
-        <Input placeholder="Search" />
-        <ul className="py-2 text-zinc-500">
-          {course.data?.units.map((unit, i) => (
-            <li key={unit.id}>
-              <Button variant="ghost" className="w-full justify-start">
-                <ChevronIcon className="mr-2 h-4 w-4" />
+  return (
+    <aside
+      ref={ref}
+      className="fixed top-0 left-0 max-w-xs h-screen w-full border-r border-zinc-200 px-4 py-6"
+    >
+      <h1 className="font-bold mb-2">{course.data?.name}</h1>
+      <Input placeholder="Search" />
+      <ul className="py-2 text-zinc-500">
+        {course.data?.units.map((unit, i) => (
+          <li key={unit.id}>
+            <Button
+              variant={i + 1 === parseInt(theUnit) ? "secondary" : "ghost"}
+              className="w-full justify-start"
+            >
+              <ChevronIcon
+                className={`mr-2 h-4 w-4 flex-shrink-0 ${
+                  i + 1 === parseInt(theUnit) ? "rotate-90" : ""
+                }`}
+              />
+              <span className="truncate">
                 Unit {i + 1}: {unit.title}
-              </Button>
-            </li>
-          ))}
-          <li>
-            <Button variant="ghost" className="w-full justify-start">
-              <PaletteIcon className="mr-2 h-4 w-4" />
-              Customize Theme
+              </span>
             </Button>
+            {i + 1 === parseInt(theUnit) && (
+              <div>
+                {unit.subunits.map((subunit, i) => (
+                  <Button
+                    key={subunit.id}
+                    variant="ghost"
+                    className="w-full justify-start"
+                  >
+                    <ChevronIcon className="mr-2 ml-5 h-4 w-4 flex-shrink-0" />
+                    <span className="truncate">{subunit.title}</span>
+                  </Button>
+                ))}
+              </div>
+            )}
           </li>
-        </ul>
-      </aside>
-    );
-  }
-);
+        ))}
+        <li>
+          <Button variant="ghost" className="w-full justify-start">
+            <PaletteIcon className="mr-2 h-4 w-4" />
+            Customize Theme
+          </Button>
+        </li>
+      </ul>
+    </aside>
+  );
+});

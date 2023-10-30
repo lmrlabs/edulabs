@@ -28,7 +28,7 @@ function CoursePage({
   const course = trpc.course.getCourse.useQuery({ courseCode: courseCode! });
 
   return (
-    <CourseLayout courseCode={courseCode!}>
+    <CourseLayout courseCode={courseCode!} unit={unit}>
       <H3>
         Unit {unit.toString()}. {course.data?.units[parseInt(unit) - 1].title}
       </H3>
