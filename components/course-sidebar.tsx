@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { trpc } from "../utils/trpc";
 import Link from "next/link";
+import  ImageButton  from "./ui/mainicon";
 
 const ChevronIcon: React.FC<{ className: string }> = ({ className }) => {
   return (
@@ -51,6 +52,8 @@ export const CourseSidebar = forwardRef<
       ref={ref}
       className="fixed top-0 left-0 max-w-xs h-screen w-full border-r border-zinc-200 px-4 py-6"
     >
+              <ImageButton />
+
       <h1 className="font-bold mb-2">{course.data?.name}</h1>
       <Input placeholder="Search" />
       <ul className="py-2 text-zinc-500">

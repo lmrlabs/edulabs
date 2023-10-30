@@ -3,6 +3,8 @@ import CourseLayout from "@/components/course-layout";
 import { CourseProgress } from "@/components/course-progress";
 import { MCQ } from "@/components/quiz-forms";
 import { Button } from "@/components/ui/button";
+import ImageButton from "@/components/ui/mainicon";
+
 import {
   Dialog,
   DialogContent,
