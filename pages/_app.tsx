@@ -1,24 +1,13 @@
-import type { AppProps } from "next/app";
-import { trpc } from "@/utils/trpc";
 import "../styles/globals.css";
-// import { cn } from "@/lib/utils";
-// import { Inter as FontSans } from "next/font/google";
+import type { AppProps } from "next/app";
+import { trpc } from "../utils/trpc";
+import { SessionProvider } from "next-auth/react";
 
-// export const fontSans = FontSans({
-//   subsets: ["latin"],
-//   variable: "--font-sans",
-// });
-
-function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <div
-    // className={cn(
-    //   "min-h-screen bg-background font-sans antialiased",
-    //   fontSans.variable
-    // )}
-    >
+    <SessionProvider session={session}>
       <Component {...pageProps} />
-    </div>
+    </SessionProvider>
   );
 }
 
