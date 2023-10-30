@@ -1,18 +1,16 @@
-import { z } from "zod";
 import { dbConnect } from "@/utils/dbConnect";
-import mongoose, { Schema } from "mongoose";
-import { procedure, router } from "../trpc";
+import mongoose from "mongoose";
+import { z } from "zod";
 import Course from "../models/Course";
+import { procedure, router } from "../trpc";
 
 import User from "../models/User";
 
 export const userRouter = router({
   me: procedure.query(async ({ ctx }) => {
     await dbConnect();
-    console.log(ctx.session);
-
     if (!ctx.session) {
-      throw new Error("User not found.");
+      return null;
     }
     return ctx.session.user;
   }),

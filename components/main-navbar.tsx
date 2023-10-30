@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { trpc } from "../utils/trpc";
 
 const CenterNavigationMenu: React.FC = () => {
   return (
@@ -87,18 +88,29 @@ const ListItem = React.forwardRef<
 ListItem.displayName = "ListItem";
 
 export const MainNavigationBar: React.FC = () => {
+  const me = trpc.user.me.useQuery();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
         <CenterNavigationMenu />
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <Input className="w-96" placeholder="Search" />
-          <Button
-            variant="secondary"
-            onClick={() => signIn("google", { callbackUrl: "/" })}
-          >
-            Log in
-          </Button>
+          {me.data ? (
+            <>
+              <Button variant="destructive" onClick={() => signOut()}>
+                Log out
+              </Button>
+              <img className="w-9 h-9 rounded-full" src={me.data.image} />
+            </>
+          ) : (
+            <Button
+              variant="secondary"
+              onClick={() => signIn("google", { callbackUrl: "/" })}
+            >
+              Log in
+            </Button>
+          )}
         </div>
       </div>
     </header>
