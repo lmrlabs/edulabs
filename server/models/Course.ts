@@ -20,6 +20,7 @@ const courseSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  courseCode: String,
   units: [unitSchema],
   description: {
     type: String,

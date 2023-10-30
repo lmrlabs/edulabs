@@ -30,7 +30,7 @@ export default function Home() {
                   {course.units.map((unit, i) => (
                     <li>
                       <Link
-                        href={`/courses/${course.name}/unit-${i + 1}`}
+                        href={`/courses/${course.courseCode}/unit-${i + 1}`}
                         className="hover:underline"
                       >
                         Unit {i + 1}: {unit.title}

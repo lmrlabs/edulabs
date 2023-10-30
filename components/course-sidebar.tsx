@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { trpc } from "../utils/trpc";
 
 const ChevronIcon: React.FC<{ className: string }> = ({ className }) => {
   return (
@@ -38,33 +39,34 @@ const PaletteIcon: React.FC<{ className: string }> = ({ className }) => {
   );
 };
 
-export const CourseSidebar = forwardRef<HTMLDivElement, {}>((_, ref) => {
-  return (
-    <aside
-      ref={ref}
-      className="fixed top-0 left-0 max-w-xs h-screen w-full border-r border-zinc-200 px-4 py-6"
-    >
-      <h1 className="font-bold mb-2">AP®︎ Calculus AB</h1>
-      <Input placeholder="Search" />
-      <ul className="py-2 text-zinc-500">
-        <li>
-          <Button variant="ghost" className="w-full justify-start">
-            <ChevronIcon className="mr-2 h-4 w-4" /> Limits and continuity
-          </Button>
-        </li>
-        <li>
-          <Button variant="ghost" className="w-full justify-start">
-            <ChevronIcon className="mr-2 h-4 w-4" />
-            Differentiation I
-          </Button>
-        </li>
-        <li>
-          <Button variant="ghost" className="w-full justify-start">
-            <PaletteIcon className="mr-2 h-4 w-4" />
-            Customize Theme
-          </Button>
-        </li>
-      </ul>
-    </aside>
-  );
-});
+export const CourseSidebar = forwardRef<HTMLDivElement, { courseCode: string }>(
+  ({ courseCode }, ref) => {
+    const course = trpc.course.getCourse.useQuery({ courseCode: courseCode! });
+
+    return (
+      <aside
+        ref={ref}
+        className="fixed top-0 left-0 max-w-xs h-screen w-full border-r border-zinc-200 px-4 py-6"
+      >
+        <h1 className="font-bold mb-2">{course.data?.name}</h1>
+        <Input placeholder="Search" />
+        <ul className="py-2 text-zinc-500">
+          {course.data?.units.map((unit, i) => (
+            <li key={unit.id}>
+              <Button variant="ghost" className="w-full justify-start">
+                <ChevronIcon className="mr-2 h-4 w-4" />
+                Unit {i + 1}: {unit.title}
+              </Button>
+            </li>
+          ))}
+          <li>
+            <Button variant="ghost" className="w-full justify-start">
+              <PaletteIcon className="mr-2 h-4 w-4" />
+              Customize Theme
+            </Button>
+          </li>
+        </ul>
+      </aside>
+    );
+  }
+);

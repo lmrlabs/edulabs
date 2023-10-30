@@ -56,13 +56,18 @@ export const courseRouter = router({
   getCourse: procedure
     .input(
       z.object({
-        id: z.instanceof(mongoose.Types.ObjectId),
+        courseCode: z.string(),
       })
     )
     .query(async ({ input }) => {
       await dbConnect();
-      const course = await Course.findById(input.id);
-      return { course };
+      try {
+        const course = await Course.find({ courseCode: input.courseCode });
+        return course[0];
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
     }),
 });
 

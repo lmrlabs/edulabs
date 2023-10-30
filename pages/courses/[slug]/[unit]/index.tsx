@@ -18,12 +18,20 @@ import {
 } from "@/components/ui/popover";
 import { H3, Muted } from "@/components/ui/typography";
 import { BarChart, Plus } from "lucide-react";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import { trpc } from "../../../../utils/trpc";
 
-function CoursePage() {
+function CoursePage({
+  courseCode,
+  unit,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const course = trpc.course.getCourse.useQuery({ courseCode: courseCode! });
+
   return (
-    <CourseLayout>
-      <H3>Unit 2. Differentiation I</H3>
-      <Muted>Equiv. AP Unit II: Definition and fundamental properties</Muted>
+    <CourseLayout courseCode={courseCode!}>
+      <H3>
+        Unit {unit.toString()}. {course.data?.units[parseInt(unit) - 1].title}
+      </H3>
       <div className="flex items-center gap-2 mt-4">
         <Button variant="outline">1-by-1 view</Button>
         <Button variant="outline">
@@ -61,5 +69,18 @@ function CoursePage() {
     </CourseLayout>
   );
 }
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const courseCode = context.params?.slug?.toString();
+  const unit = context.params?.unit?.toString();
+  return {
+    props: {
+      courseCode,
+      unit: unit!.replace("unit-", ""),
+    },
+  };
+};
 
 export default CoursePage;
