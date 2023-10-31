@@ -1,7 +1,7 @@
 import CourseFlashcard from "@/components/course-flashcard";
 import CourseLayout from "@/components/course-layout";
 import { CourseProgress } from "@/components/course-progress";
-import { FRQ, MCQ } from "@/components/quiz-forms";
+import { FRQ, MCQ, QuizSettings } from "@/components/quiz-forms";
 import { Button } from "@/components/ui/button";
 import ImageButton from "@/components/ui/mainicon";
 
@@ -57,10 +57,11 @@ function CoursePage({
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Unit 2 Quiz</DialogTitle>
+              <DialogTitle>Configure Quiz</DialogTitle>
               <DialogDescription>
+                <QuizSettings />
                 {/* <MCQ /> */}
-                <FRQ />
+                {/* <FRQ /> */}
               </DialogDescription>
             </DialogHeader>
           </DialogContent>

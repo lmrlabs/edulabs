@@ -54,6 +54,20 @@ export const CourseProgress: React.FC<{ courseCode: string; unit: number }> = ({
   const myCourse = trpc.user.myCourse.useQuery({ courseCode });
   console.log({ myCourse });
 
+  if (myCourse.isLoading) {
+    return (
+      <center className="py-4">
+        <div
+          className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-zinc-300 rounded-full"
+          role="status"
+          aria-label="loading"
+        >
+          <span className="sr-only">Loading...</span>
+        </div>
+      </center>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-4">
       {myCourse.data?.course.units[unit - 1].subunits.map((subunit, i) => (

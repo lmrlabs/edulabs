@@ -1,9 +1,66 @@
 import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import "katex/dist/katex.min.css";
 import React from "react";
 import { InlineMath } from "react-katex";
 import { Textarea } from "./ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { Form, FormField, FormItem, FormLabel } from "./ui/form";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+const FormSchema = z.object({
+  questionType: z.string(),
+});
+
+export const QuizSettings: React.FC = () => {
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  });
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {}
+
+  return (
+    <div className="mt-4">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="questionType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Question Type</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger className="w-[280px]">
+                    <SelectValue placeholder="Multiple choice or free response?" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="light">MCQ</SelectItem>
+                    <SelectItem value="dark">FRQ (Short Answer)</SelectItem>
+                    <SelectItem value="system">FRQ (Essay)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="w-full">
+            Ok, quiz me
+          </Button>
+        </form>
+      </Form>
+    </div>
+  );
+};
 
 export const MCQ: React.FC = () => {
   return (
