@@ -59,7 +59,7 @@ function CoursePage({
             <DialogHeader>
               <DialogTitle>Configure Quiz</DialogTitle>
               <DialogDescription>
-                <QuizSettings />
+                <QuizSettings courseCode={courseCode!} unit={unit} />
                 {/* <MCQ /> */}
                 {/* <FRQ /> */}
               </DialogDescription>
