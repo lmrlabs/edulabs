@@ -117,6 +117,69 @@ export const userRouter = router({
 
       return { course: course.courseId, units: course.units };
     }),
+
+  updateProgress: procedure
+    .input(
+      z.object({
+        courseId: z.string(),
+        unitId: z.string(),
+        subunitId: z.string(),
+        newProgress: z
+        .union([z.string(), z.number()])
+        .transform((val) => (typeof val === 'string' ? parseInt(val, 10) : val)),      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      await dbConnect();
+      const userId = ctx.session?.user.id;
+      try {
+        const { courseId, unitId, subunitId, newProgress } = input;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+          throw new Error("User not found.");
+        }
+
+        const courseIndex = user.progress.findIndex(
+          (course) => course.courseId.toString() === courseId
+        );
+
+        if (courseIndex === -1) {
+          throw new Error("Course not found.");
+        }
+
+        const unitIndex = user.progress[courseIndex].units.findIndex(
+          (unit) => unit.unitId.toString() === unitId
+        );
+
+        if (unitIndex === -1) {
+          throw new Error("Unit not found.");
+        }
+
+        const subunitIndex = user.progress[courseIndex].units[
+          unitIndex
+        ].subunits.findIndex(
+          (subunit) => subunit.subunitId.toString() === subunitId
+        );
+
+        if (subunitIndex === -1) {
+          throw new Error("Subunit not found.");
+        }
+
+        // Update progress
+        user.progress[courseIndex].units[unitIndex].subunits[
+          subunitIndex
+        ].progress = newProgress;
+
+        // Save the updated user document
+        await user.save();
+
+        return { message: "Progress updated successfully." };
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    }),
 });
 
 export default userRouter;

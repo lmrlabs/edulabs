@@ -32,7 +32,7 @@ function CoursePage({
   return (
     <CourseLayout courseCode={courseCode!} unit={unit}>
       <H3>
-        Unit {unit.toString()}. {course.data?.units[unit - 1].title}
+        Unit {unit.toString()}. {course.data?.units[parseInt(unit) - 1].title}
       </H3>
       <div className="flex items-center gap-2 mt-4">
         <Button variant="outline">1-by-1 view</Button>
@@ -48,7 +48,7 @@ function CoursePage({
             </Button>
           </PopoverTrigger>
           <PopoverContent sideOffset={8}>
-            <CourseProgress courseCode={courseCode!} unit={unit} />
+            <CourseProgress courseCode={courseCode!} />
           </PopoverContent>
         </Popover>
         <Dialog>
@@ -80,7 +80,7 @@ export const getServerSideProps = async (
   return {
     props: {
       courseCode,
-      unit: parseInt(unit!.replace("unit-", "")),
+      unit: unit!.replace("unit-", ""),
     },
   };
 };
