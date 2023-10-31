@@ -74,7 +74,7 @@ export const CourseSidebar = forwardRef<
                 </span>
               </Button>
             </Link>
-            {i + 1 === theUnit && (
+            {i + 1 === parseInt(theUnit) && (
               <div>
                 {unit.subunits.map((subunit, i) => (
                   <Button

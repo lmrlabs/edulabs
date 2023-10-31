@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import "katex/dist/katex.min.css";
-import React from "react";
+import React, { useEffect } from "react";
+import { apPhysics1_kinematics_mcq } from "@/keys";
 import { InlineMath } from "react-katex";
 import { Textarea } from "./ui/textarea";
 import {
@@ -22,16 +23,19 @@ const FormSchema = z.object({
   subunit: z.string(),
 });
 
-export const QuizSettings: React.FC<{ courseCode: string; unit: number }> = ({
-  courseCode,
-  unit,
-}) => {
+export const QuizSettings: React.FC<{
+  setFilters: (x: z.infer<typeof FormSchema>) => void;
+  courseCode: string;
+  unit: number;
+}> = ({ courseCode, setFilters, unit }) => {
   const course = trpc.course.getCourse.useQuery({ courseCode: courseCode! });
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {}
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    setFilters(data);
+  }
 
   return (
     <div className="mt-4">
@@ -77,7 +81,7 @@ export const QuizSettings: React.FC<{ courseCode: string; unit: number }> = ({
                   </SelectTrigger>
                   <SelectContent>
                     {course.data?.units[unit - 1].subunits.map((subunit, i) => (
-                      <SelectItem value={subunit._id}>
+                      <SelectItem value={subunit.title}>
                         <span className="capitalize">
                           {String.fromCharCode(97 + i)}.{" "}
                         </span>
@@ -100,14 +104,44 @@ export const QuizSettings: React.FC<{ courseCode: string; unit: number }> = ({
 };
 
 export const MCQ: React.FC = () => {
+  const [question, setQuestion] = React.useState<any>(null);
+
+  useEffect(() => {
+    const random =
+      Math.floor(Math.random() * apPhysics1_kinematics_mcq.length) + 1;
+    setQuestion(apPhysics1_kinematics_mcq[random]);
+  }, []);
+
   return (
     <div className="max-w-xl mx-auto">
       <p>
-        Given the function <InlineMath math="g(x)=\dfrac{e^x}{x^e}" />, find{" "}
-        <InlineMath math="\dfrac{d g(x)}{dx}" />.
+        {/* Given the function <InlineMath math="g(x)=\dfrac{e^x}{x^e}" />, find{" "}
+        <InlineMath math="\dfrac{d g(x)}{dx}" />. */}
+        {question?.question}
       </p>
-      <form className="grid gap-4 mt-4">
-        <label className="inline-flex items-center">
+      <form
+        className="grid gap-4 mt-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          // get radio value
+          // check if correct
+          const value = (
+            document.querySelector(
+              'input[name="radio"]:checked'
+            ) as HTMLInputElement
+          ).value;
+          // make value into a-z
+          const letter = String.fromCharCode(
+            97 + parseInt(value)
+          ).toUpperCase();
+          if (letter === question?.correct_answer) {
+            alert("Correct!");
+          } else {
+            alert("Wrong!");
+          }
+        }}
+      >
+        {/* <label className="inline-flex items-center">
           <input
             type="radio"
             className="form-radio text-primary-dark border-zinc-300"
@@ -148,7 +182,18 @@ export const MCQ: React.FC = () => {
             value="3"
           />
           <span className="ml-2">None of the above</span>
-        </label>
+        </label> */}
+        {question?.options.map((option: string, i) => (
+          <label className="inline-flex items-center" key={i}>
+            <input
+              type="radio"
+              className="form-radio text-primary-dark border-zinc-300"
+              name="radio"
+              value={i}
+            />
+            <span className="ml-2">{option}</span>
+          </label>
+        ))}
         <div className="space-y-2 mt-2">
           <Button type="submit" name="check" className="w-full">
             Check

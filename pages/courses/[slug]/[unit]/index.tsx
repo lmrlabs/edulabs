@@ -22,6 +22,7 @@ import { H3, Muted } from "@/components/ui/typography";
 import { BarChart, Plus } from "lucide-react";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { trpc } from "../../../../utils/trpc";
+import { useState } from "react";
 
 function CoursePage({
   courseCode,
@@ -30,7 +31,7 @@ function CoursePage({
   const course = trpc.course.getCourse.useQuery({ courseCode: courseCode! });
 
   return (
-    <CourseLayout courseCode={courseCode!} unit={unit}>
+    <CourseLayout courseCode={courseCode!} unit={parseInt(unit)}>
       <H3>
         Unit {unit.toString()}. {course.data?.units[parseInt(unit) - 1].title}
       </H3>
@@ -48,24 +49,10 @@ function CoursePage({
             </Button>
           </PopoverTrigger>
           <PopoverContent sideOffset={8}>
-            <CourseProgress courseCode={courseCode!} unit={unit} />
+            <CourseProgress courseCode={courseCode!} unit={parseInt(unit)} />
           </PopoverContent>
         </Popover>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>Quiz me</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Configure Quiz</DialogTitle>
-              <DialogDescription>
-                <QuizSettings courseCode={courseCode!} unit={unit} />
-                {/* <MCQ /> */}
-                {/* <FRQ /> */}
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+        <QuizDialog courseCode={courseCode!} unit={unit} />
       </div>
       <div className="mt-4">
         <CourseFlashcard />
@@ -88,3 +75,52 @@ export const getServerSideProps = async (
 };
 
 export default CoursePage;
+
+const QuizDialog: React.FC<{ courseCode: string; unit: string }> = ({
+  courseCode,
+  unit,
+}) => {
+  const [filters, setFilters] = useState({
+    questionType: "",
+    subunit: "",
+  });
+
+  const [showSettings, setShowSettings] = useState(true);
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Quiz me</Button>
+      </DialogTrigger>
+      <DialogContent>
+        {showSettings ? (
+          <>
+            <DialogHeader>
+              <DialogTitle>Configure Quiz</DialogTitle>
+            </DialogHeader>
+            <DialogDescription>
+              <QuizSettings
+                courseCode={courseCode!}
+                unit={parseInt(unit)}
+                setFilters={(x: any) => {
+                  setFilters(x);
+                  setShowSettings(false);
+                }}
+              />
+            </DialogDescription>
+          </>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>Quiz</DialogTitle>
+            </DialogHeader>
+            <DialogDescription>
+              <MCQ />
+              {/* <FRQ /> */}
+            </DialogDescription>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+};
