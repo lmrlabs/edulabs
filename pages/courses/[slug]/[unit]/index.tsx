@@ -1,7 +1,7 @@
 import CourseFlashcard from "@/components/course-flashcard";
 import CourseLayout from "@/components/course-layout";
 import { CourseProgress } from "@/components/course-progress";
-import { MCQ } from "@/components/quiz-forms";
+import { FRQ, MCQ } from "@/components/quiz-forms";
 import { Button } from "@/components/ui/button";
 import ImageButton from "@/components/ui/mainicon";
 
@@ -48,7 +48,7 @@ function CoursePage({
             </Button>
           </PopoverTrigger>
           <PopoverContent sideOffset={8}>
-            <CourseProgress courseCode={courseCode!} />
+            <CourseProgress courseCode={courseCode!} unit={unit} />
           </PopoverContent>
         </Popover>
         <Dialog>
@@ -59,7 +59,8 @@ function CoursePage({
             <DialogHeader>
               <DialogTitle>Unit 2 Quiz</DialogTitle>
               <DialogDescription>
-                <MCQ />
+                {/* <MCQ /> */}
+                <FRQ />
               </DialogDescription>
             </DialogHeader>
           </DialogContent>

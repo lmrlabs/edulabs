@@ -50,7 +50,7 @@ export const CourseSidebar = forwardRef<
   return (
     <aside
       ref={ref}
-      className="fixed top-0 left-0 max-w-xs h-screen w-full border-r border-zinc-200 px-4 py-6 overflow-y-auto"
+      className="fixed z-50 bg-white top-0 left-0 max-w-xs h-screen w-full border-r border-zinc-200 px-4 py-6 overflow-y-auto"
     >
       <ImageButton />
 
@@ -58,7 +58,7 @@ export const CourseSidebar = forwardRef<
       <Input placeholder="Search" />
       <ul className="py-2 text-zinc-500">
         {course.data?.units.map((unit, i) => (
-          <li key={unit.id}>
+          <li key={unit._id}>
             <Link href={`/courses/${courseCode}/unit-${i + 1}`}>
               <Button
                 variant={i + 1 === theUnit ? "secondary" : "ghost"}

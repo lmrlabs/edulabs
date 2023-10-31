@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import "katex/dist/katex.min.css";
 import React from "react";
 import { InlineMath } from "react-katex";
+import { Textarea } from "./ui/textarea";
 
 export const MCQ: React.FC = () => {
   return (
@@ -72,7 +73,9 @@ export const MCQ: React.FC = () => {
   );
 };
 
-export const FRQ: React.FC = () => {
+export const FRQ: React.FC<{ shortAnswer?: boolean }> = ({
+  shortAnswer = false,
+}) => {
   return (
     <div className="max-w-xl mx-auto">
       <p>
@@ -80,7 +83,11 @@ export const FRQ: React.FC = () => {
         <InlineMath math="\dfrac{d g(x)}{dx}" />.
       </p>
       <form>
-        <Input placeholder="Answer" className="mt-4" />
+        {shortAnswer ? (
+          <Input placeholder="Answer" className="mt-4" />
+        ) : (
+          <Textarea placeholder="Paragraph answer" className="mt-4" />
+        )}
         <div className="space-y-2 mt-2">
           <Button type="submit" name="check" className="w-full">
             Check
