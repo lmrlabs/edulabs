@@ -169,7 +169,7 @@ export const userRouter = router({
         // Update progress
         user.progress[courseIndex].units[unitIndex].subunits[
           subunitIndex
-        ].progress = newProgress;
+        ].progress+=newProgress;
 
         // Save the updated user document
         await user.save();
