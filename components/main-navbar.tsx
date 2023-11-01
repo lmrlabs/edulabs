@@ -15,8 +15,8 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { trpc } from "../utils/trpc";
 import Image from "next/image";
-import logo from "../components/edulabs-logo-zip-file/png/logo-no-background.png"
-import icon from "../components/edulabs-logo-zip-file/svg/logo-clean.png"
+import logo from "../components/edulabs-logo-zip-file/png/logo-no-background.png";
+import icon from "../components/edulabs-logo-zip-file/svg/logo-clean.png";
 
 const CenterNavigationMenu: React.FC = () => {
   return (
@@ -70,8 +70,6 @@ const CenterNavigationMenu: React.FC = () => {
   );
 };
 
-
-
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a">
@@ -113,12 +111,13 @@ export const MainNavigationBar: React.FC = () => {
                 Log out
               </Button>
               <Image
-  className="rounded-full"
-  src={icon}
-  alt="Profile Image"
-  width={40}  // w-10 in Tailwind translates to 40 pixels
-  height={40} // h-10 in Tailwind translates to 40 pixels
-/>            </>
+                className="rounded-full"
+                src={icon}
+                alt="Profile Image"
+                width={40} 
+                height={40} 
+              />{" "}
+            </>
           ) : (
             <Button
               variant="secondary"
