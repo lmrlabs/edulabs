@@ -52,8 +52,6 @@ export const CourseSidebar = forwardRef<
       ref={ref}
       className="fixed z-50 bg-white top-0 left-0 max-w-xs h-screen w-full border-r border-zinc-200 px-4 py-6 overflow-y-auto"
     >
-      <ImageButton />
-
       <h1 className="font-bold mb-2">{course.data?.name}</h1>
       <Input placeholder="Search" />
       <ul className="py-2 text-zinc-500">
