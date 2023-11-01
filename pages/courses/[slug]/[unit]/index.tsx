@@ -30,6 +30,7 @@ function CoursePage({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const course = trpc.course.getCourse.useQuery({ courseCode: courseCode! });
 
+  console.log(courseCode, unit)
   return (
     <CourseLayout courseCode={courseCode!} unit={parseInt(unit)}>
       <H3>
@@ -55,7 +56,7 @@ function CoursePage({
         <QuizDialog course={course.data} courseCode={courseCode!} unit={unit} />
       </div>
       <div className="mt-4">
-        <CourseFlashcard />
+        <CourseFlashcard course={courseCode!} unit={unit}/>
       </div>
     </CourseLayout>
   );
