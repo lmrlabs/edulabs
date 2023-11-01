@@ -16,6 +16,7 @@ import { Button } from "./ui/button";
 import { trpc } from "../utils/trpc";
 import Image from "next/image";
 import logo from "../components/edulabs-logo-zip-file/png/logo-no-background.png"
+import icon from "../components/edulabs-logo-zip-file/svg/logo-clean.png"
 
 const CenterNavigationMenu: React.FC = () => {
   return (
@@ -111,8 +112,13 @@ export const MainNavigationBar: React.FC = () => {
               <Button variant="destructive" onClick={() => signOut()}>
                 Log out
               </Button>
-              <img className="w-10 h-10 rounded-full" src={me.data.image} />
-            </>
+              <Image
+  className="rounded-full"
+  src={icon}
+  alt="Profile Image"
+  width={40}  // w-10 in Tailwind translates to 40 pixels
+  height={40} // h-10 in Tailwind translates to 40 pixels
+/>            </>
           ) : (
             <Button
               variant="secondary"
