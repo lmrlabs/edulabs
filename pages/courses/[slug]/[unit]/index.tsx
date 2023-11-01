@@ -52,7 +52,7 @@ function CoursePage({
             <CourseProgress courseCode={courseCode!} unit={parseInt(unit)} />
           </PopoverContent>
         </Popover>
-        <QuizDialog courseCode={courseCode!} unit={unit} />
+        <QuizDialog course={course.data} courseCode={courseCode!} unit={unit} />
       </div>
       <div className="mt-4">
         <CourseFlashcard />
@@ -76,10 +76,11 @@ export const getServerSideProps = async (
 
 export default CoursePage;
 
-const QuizDialog: React.FC<{ courseCode: string; unit: string }> = ({
-  courseCode,
-  unit,
-}) => {
+const QuizDialog: React.FC<{
+  course: any;
+  courseCode: string;
+  unit: string;
+}> = ({ courseCode, unit, course }) => {
   const [filters, setFilters] = useState({
     questionType: "",
     subunit: "",
@@ -129,6 +130,7 @@ const QuizDialog: React.FC<{ courseCode: string; unit: string }> = ({
             <DialogDescription>
               {filters.questionType === "mcq" ? (
                 <MCQ
+                  course={course}
                   courseCode={courseCode}
                   unit={parseInt(unit)}
                   filters={filters}

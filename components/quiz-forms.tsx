@@ -110,8 +110,9 @@ export const QuizSettings: React.FC<{
 export const MCQ: React.FC<{
   courseCode: string;
   unit: number;
+  course: any;
   filters: z.infer<typeof FormSchema>;
-}> = ({ courseCode, unit, filters }) => {
+}> = ({ courseCode, unit, course, filters }) => {
   const [question, setQuestion] = React.useState<any>(null);
   function questionBank() {
     if (
@@ -151,6 +152,8 @@ export const MCQ: React.FC<{
     regenerate();
   }, []);
 
+  const updateProgress = trpc.user.updateProgress.useMutation();
+
   return (
     <div className="max-w-xl mx-auto">
       {question === undefined ? "No questions found" : null}
@@ -161,7 +164,9 @@ export const MCQ: React.FC<{
       </p>
       <form
         className="grid gap-4 mt-4"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
+          console.log(course);
+
           e.preventDefault();
           // get radio value
           // check if correct
@@ -176,6 +181,13 @@ export const MCQ: React.FC<{
           ).toUpperCase();
           if (letter === question?.correct_answer) {
             alert("Correct!");
+            await updateProgress.mutateAsync({
+              courseId: course._id,
+              unitId: course.units[unit - 1]._id,
+              subunitId: course.units[unit - 1].subunits.find(
+                (x: any) => x.title === question.metadata.subunit
+              )._id,
+            });
           } else {
             alert("Wrong!");
           }

@@ -124,15 +124,18 @@ export const userRouter = router({
         courseId: z.string(),
         unitId: z.string(),
         subunitId: z.string(),
-        newProgress: z
-        .union([z.string(), z.number()])
-        .transform((val) => (typeof val === 'string' ? parseInt(val, 10) : val)),      })
+        // newProgress: z
+        //   .union([z.string(), z.number()])
+        //   .transform((val) =>
+        //     typeof val === "string" ? parseInt(val, 10) : val
+        //   ),
+      })
     )
     .mutation(async ({ input, ctx }) => {
       await dbConnect();
       const userId = ctx.session?.user.id;
       try {
-        const { courseId, unitId, subunitId, newProgress } = input;
+        const { courseId, unitId, subunitId } = input;
 
         const user = await User.findById(userId);
 
@@ -167,9 +170,8 @@ export const userRouter = router({
         }
 
         // Update progress
-        user.progress[courseIndex].units[unitIndex].subunits[
-          subunitIndex
-        ].progress = newProgress;
+        user.progress[courseIndex].units[unitIndex].subunits[subunitIndex]
+          .progress++;
 
         // Save the updated user document
         await user.save();
