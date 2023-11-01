@@ -88,7 +88,19 @@ const QuizDialog: React.FC<{ courseCode: string; unit: string }> = ({
   const [showSettings, setShowSettings] = useState(true);
 
   return (
-    <Dialog>
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          setTimeout(() => {
+            setShowSettings(true);
+            setFilters({
+              questionType: "",
+              subunit: "",
+            });
+          }, 500);
+        }
+      }}
+    >
       <DialogTrigger asChild>
         <Button>Quiz me</Button>
       </DialogTrigger>
@@ -115,8 +127,19 @@ const QuizDialog: React.FC<{ courseCode: string; unit: string }> = ({
               <DialogTitle>Quiz</DialogTitle>
             </DialogHeader>
             <DialogDescription>
-              <MCQ />
-              {/* <FRQ /> */}
+              {filters.questionType === "mcq" ? (
+                <MCQ
+                  courseCode={courseCode}
+                  unit={parseInt(unit)}
+                  filters={filters}
+                />
+              ) : (
+                <FRQ
+                  courseCode={courseCode}
+                  unit={parseInt(unit)}
+                  filters={filters}
+                />
+              )}
             </DialogDescription>
           </>
         )}

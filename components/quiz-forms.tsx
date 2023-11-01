@@ -3,7 +3,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import "katex/dist/katex.min.css";
 import React, { useEffect } from "react";
-import { apPhysics1_kinematics_mcq } from "@/keys";
+import {
+  apBiology_chemistryOfLife_mcq,
+  apPhysics1_dynamics_frq,
+  apPhysics1_kinematics_mcq,
+} from "@/keys";
 import { InlineMath } from "react-katex";
 import { Textarea } from "./ui/textarea";
 import {
@@ -103,17 +107,53 @@ export const QuizSettings: React.FC<{
   );
 };
 
-export const MCQ: React.FC = () => {
+export const MCQ: React.FC<{
+  courseCode: string;
+  unit: number;
+  filters: z.infer<typeof FormSchema>;
+}> = ({ courseCode, unit, filters }) => {
   const [question, setQuestion] = React.useState<any>(null);
+  function questionBank() {
+    if (
+      courseCode === "ap-physics-1" &&
+      unit === 1 &&
+      filters.questionType === "mcq"
+    ) {
+      return apPhysics1_kinematics_mcq;
+    }
+    if (
+      courseCode === "ap-physics-1" &&
+      unit === 2 &&
+      filters.questionType === "frq-short"
+    ) {
+      return apPhysics1_dynamics_frq;
+    }
+    if (
+      courseCode === "ap-biology" &&
+      unit === 1 &&
+      filters.questionType === "mcq"
+    ) {
+      return apBiology_chemistryOfLife_mcq;
+    }
+    return [];
+  }
+
+  function regenerate() {
+    const list = questionBank().filter((x) => {
+      if (filters.subunit === "all") return true;
+      return x.metadata.subunit === filters.subunit;
+    });
+    const random = Math.floor(Math.random() * list.length) + 1;
+    setQuestion(list[random]);
+  }
 
   useEffect(() => {
-    const random =
-      Math.floor(Math.random() * apPhysics1_kinematics_mcq.length) + 1;
-    setQuestion(apPhysics1_kinematics_mcq[random]);
+    regenerate();
   }, []);
 
   return (
     <div className="max-w-xl mx-auto">
+      {question === undefined ? "No questions found" : null}
       <p>
         {/* Given the function <InlineMath math="g(x)=\dfrac{e^x}{x^e}" />, find{" "}
         <InlineMath math="\dfrac{d g(x)}{dx}" />. */}
@@ -199,10 +239,11 @@ export const MCQ: React.FC = () => {
             Check
           </Button>
           <Button
-            type="submit"
+            type="button"
             name="skip"
             className="w-full"
             variant="secondary"
+            onClick={regenerate}
           >
             Skip
           </Button>
@@ -212,20 +253,81 @@ export const MCQ: React.FC = () => {
   );
 };
 
-export const FRQ: React.FC<{ shortAnswer?: boolean }> = ({
-  shortAnswer = false,
-}) => {
+export const FRQ: React.FC<{
+  shortAnswer?: boolean;
+  courseCode: string;
+  unit: number;
+  filters: z.infer<typeof FormSchema>;
+}> = ({ shortAnswer = true, courseCode, unit, filters }) => {
+  const [question, setQuestion] = React.useState<any>(null);
+  function questionBank() {
+    if (
+      courseCode === "ap-physics-1" &&
+      unit === 1 &&
+      filters.questionType === "mcq"
+    ) {
+      return apPhysics1_kinematics_mcq;
+    }
+    if (
+      courseCode === "ap-physics-1" &&
+      unit === 2 &&
+      filters.questionType === "frq-short"
+    ) {
+      return apPhysics1_dynamics_frq;
+    }
+    if (
+      courseCode === "ap-biology" &&
+      unit === 1 &&
+      filters.questionType === "mcq"
+    ) {
+      return apBiology_chemistryOfLife_mcq;
+    }
+    return [];
+  }
+
+  function regenerate() {
+    const list = questionBank().filter((x) => {
+      if (filters.subunit === "all") return true;
+      return x.metadata.subunit === filters.subunit;
+    });
+    const random = Math.floor(Math.random() * list.length) + 1;
+    setQuestion(list[random]);
+  }
+
+  useEffect(() => {
+    regenerate();
+  }, []);
+
   return (
     <div className="max-w-xl mx-auto">
       <p>
-        Given the function <InlineMath math="g(x)=\dfrac{e^x}{x^e}" />, find{" "}
-        <InlineMath math="\dfrac{d g(x)}{dx}" />.
+        {/* Given the function <InlineMath math="g(x)=\dfrac{e^x}{x^e}" />, find{" "}
+        <InlineMath math="\dfrac{d g(x)}{dx}" />. */}
+        {question?.question}
       </p>
-      <form>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          // get radio value
+          // check if correct
+          const value = (
+            document.querySelector('input[name="answer"]') as HTMLInputElement
+          ).value;
+          if (question.options.find((x: string) => value === x.trim())) {
+            alert("Correct!");
+          } else {
+            alert("Wrong!");
+          }
+        }}
+      >
         {shortAnswer ? (
-          <Input placeholder="Answer" className="mt-4" />
+          <Input name="answer" placeholder="Answer" className="mt-4" />
         ) : (
-          <Textarea placeholder="Paragraph answer" className="mt-4" />
+          <Textarea
+            name="answer"
+            placeholder="Paragraph answer"
+            className="mt-4"
+          />
         )}
         <div className="space-y-2 mt-2">
           <Button type="submit" name="check" className="w-full">
