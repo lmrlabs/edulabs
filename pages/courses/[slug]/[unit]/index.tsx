@@ -137,6 +137,7 @@ const QuizDialog: React.FC<{
                 />
               ) : (
                 <FRQ
+                  course={course}
                   courseCode={courseCode}
                   unit={parseInt(unit)}
                   filters={filters}

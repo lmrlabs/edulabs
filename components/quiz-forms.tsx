@@ -274,11 +274,13 @@ export const MCQ: React.FC<{
 
 export const FRQ: React.FC<{
   shortAnswer?: boolean;
+  course: any;
   courseCode: string;
   unit: number;
   filters: z.infer<typeof FormSchema>;
-}> = ({ shortAnswer = true, courseCode, unit, filters }) => {
+}> = ({ shortAnswer = true, course, courseCode, unit, filters }) => {
   const [question, setQuestion] = React.useState<any>(null);
+  const updateProgress = trpc.user.updateProgress.useMutation();
   function questionBank() {
     if (
       (courseCode === "ap-physics-1" &&
@@ -328,7 +330,7 @@ export const FRQ: React.FC<{
         {question?.question}
       </p>
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
           // get radio value
           // check if correct
@@ -337,6 +339,17 @@ export const FRQ: React.FC<{
           ).value;
           if (question.options.find((x: string) => value === x.trim())) {
             alert("Correct!");
+            await updateProgress.mutateAsync({
+              courseId: course._id,
+              unitId: course.units[unit - 1]._id,
+              subunitId: course.units[unit - 1].subunits.find(
+                (x: any) => x.title === question.metadata.subunit
+              )._id,
+            });
+            regenerate();
+            (
+              document.querySelector('input[name="answer"]') as HTMLInputElement
+            ).value = "";
           } else {
             alert("Wrong!");
           }
@@ -356,10 +369,11 @@ export const FRQ: React.FC<{
             Check
           </Button>
           <Button
-            type="submit"
+            type="button"
             name="skip"
             className="w-full"
             variant="secondary"
+            onClick={regenerate}
           >
             Skip
           </Button>
