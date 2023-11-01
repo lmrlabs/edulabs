@@ -3,7 +3,8 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { trpc } from "../utils/trpc";
 import Link from "next/link";
-import ImageButton from "./ui/mainicon";
+import logo from "../components/edulabs-logo-zip-file/png/logo-no-background.png";
+import Image from "next/image";
 
 const ChevronIcon: React.FC<{ className: string }> = ({ className }) => {
   return (
@@ -51,7 +52,11 @@ export const CourseSidebar = forwardRef<
     <aside
       ref={ref}
       className="fixed z-50 bg-white top-0 left-0 max-w-xs h-screen w-full border-r border-zinc-200 px-4 py-6 overflow-y-auto"
-    >
+    > 
+      <Link href="/" passHref>
+        <Image src={logo} alt="Logo" width={150} height={50} />
+      </Link>
+      <br />
       <h1 className="font-bold mb-2">{course.data?.name}</h1>
       <Input placeholder="Search" />
       <ul className="py-2 text-zinc-500">

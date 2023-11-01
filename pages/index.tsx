@@ -21,8 +21,8 @@ export default function Home() {
     <div>
       <MainNavigationBar />
       <main className="px-16 py-16">
-        <H1>AP Test Prep</H1>
-        <div className="grid gap-6 grid-cols-2 pt-16">
+        <H1>AP Test Problems</H1>
+        <div className="grid gap-6 grid-cols-3 pt-16">
           {courses.data?.map((course) => {
             const isEnrolled = myCourses.data?.courses.find(
               (c) => c._id === course._id

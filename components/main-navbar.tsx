@@ -14,11 +14,18 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { trpc } from "../utils/trpc";
+import Image from "next/image";
+import logo from "../components/edulabs-logo-zip-file/png/logo-no-background.png"
 
 const CenterNavigationMenu: React.FC = () => {
   return (
-    <NavigationMenu>
-      <NavigationMenuList>
+    <NavigationMenu className="flex flex-col items-start w-full">
+      <NavigationMenuList className="w-full text-left">
+        <NavigationMenuItem className="pr-5">
+          <Link href="/" passHref>
+            <Image src={logo} alt="Logo" width={150} height={50} />
+          </Link>
+        </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger>Catalog</NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -49,6 +56,7 @@ const CenterNavigationMenu: React.FC = () => {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
+
         <NavigationMenuItem>
           <Link href="/changelog" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -60,6 +68,8 @@ const CenterNavigationMenu: React.FC = () => {
     </NavigationMenu>
   );
 };
+
+
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
