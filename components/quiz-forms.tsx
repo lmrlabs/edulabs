@@ -188,6 +188,13 @@ export const MCQ: React.FC<{
                 (x: any) => x.title === question.metadata.subunit
               )._id,
             });
+            regenerate();
+            // clear form
+            (
+              document.querySelector(
+                'input[name="radio"]:checked'
+              ) as HTMLInputElement
+            ).checked = false;
           } else {
             alert("Wrong!");
           }
