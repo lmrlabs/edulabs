@@ -262,23 +262,26 @@ export const FRQ: React.FC<{
   const [question, setQuestion] = React.useState<any>(null);
   function questionBank() {
     if (
-      courseCode === "ap-physics-1" &&
-      unit === 1 &&
-      filters.questionType === "mcq"
+      (courseCode === "ap-physics-1" &&
+        unit === 1 &&
+        filters.questionType === "mcq") ||
+      filters.questionType === "all"
     ) {
       return apPhysics1_kinematics_mcq;
     }
     if (
-      courseCode === "ap-physics-1" &&
-      unit === 2 &&
-      filters.questionType === "frq-short"
+      (courseCode === "ap-physics-1" &&
+        unit === 2 &&
+        filters.questionType === "frq-short") ||
+      filters.questionType === "all"
     ) {
       return apPhysics1_dynamics_frq;
     }
     if (
-      courseCode === "ap-biology" &&
-      unit === 1 &&
-      filters.questionType === "mcq"
+      (courseCode === "ap-biology" &&
+        unit === 1 &&
+        filters.questionType === "mcq") ||
+      filters.questionType === "all"
     ) {
       return apBiology_chemistryOfLife_mcq;
     }
